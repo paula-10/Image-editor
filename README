@@ -1,4 +1,7 @@
-    In fisierul quadtree.h sunt definite structurile pentru imagine, pentru blocurile in care va fi necesar sa fie impartita imaginea, pentru arbore si 
+This projects implements an image editor using graphs.
+==========================================================================================================================================================================
+
+In fisierul quadtree.h sunt definite structurile pentru imagine, pentru blocurile in care va fi necesar sa fie impartita imaginea, pentru arbore si 
 pentru fiecare nod al arborelui.
     In fisierul quadtree.c, am delcarat urmatoarele functii:
     
@@ -16,7 +19,8 @@ pentru fiecare nod al arborelui.
 - scrierea pixelilor de face cu functia fwrite fiindca sunt in format binar;
 
 3. calculateMean
-- functia primeste ca parametri imaginea si informatiile blocului(x si y sunt niste coordonate cu ajutorul carora este parcursa matricea imaginii iar size este dimensiunea blocului) pentru care se calculeaza scorul similaritatii;
+- functia primeste ca parametri imaginea si informatiile blocului(x si y sunt niste coordonate cu ajutorul carora este parcursa matricea imaginii iar size este dimensiunea 
+blocului) pentru care se calculeaza scorul similaritatii;
 - este parcursa imaginea, tinad cont de impartirea in blocuri, iar pentru fiecare diviziune se calculeaza media culorilor;
 - dupa ce au fost calculate mediile culorilor, se calculeaza scorul similaritatii pentru fiecare bloc;
 
@@ -69,13 +73,18 @@ pentru fiecare nod al arborelui.
 13. decompressQuadTree
 - initial, functia citeste dimensiunea imaginii de la inceputul fisierului si aloca memorie pentru o imagine cu aceasta dimeniune;
 - apoi, inilializeaza un arbore cu aceasta imagine si adauga radacina in coada de procesare;
-- se citesc nodurile din fisierul de intrare: daca tipul este 0, inseamna ca nodul are 4 copii si se initilizeaza copiii cu dimensiunea sub-imaginii corespunzatoare si coordonatele calculate;
+- se citesc nodurile din fisierul de intrare: daca tipul este 0, inseamna ca nodul are 4 copii si se initilizeaza copiii cu dimensiunea sub-imaginii corespunzatoare 
+si coordonatele calculate;
 - acesti copii sunt pe urma adaugati in coada;
 - daca tipul este 1, insemna ca nodul reprezinta o frunza asa ca se citesc mediile culorilor si se actualizeaza pixelii din imagine;
 - functia se opreste cand coada este goala, iar la final o elimina impreuna cu arborele;
 
-    In main, s-au facut verificari pentru introducerea numarului corect de argumente, printandu-se un mesaj in caz contrar. In functie de argumentele primite, se rezolva o anumita cerinta. Astfel:
+    In main, s-au facut verificari pentru introducerea numarului corect de argumente, printandu-se un mesaj in caz contrar. In functie de argumentele primite, se 
+rezolva o anumita cerinta. Astfel:
     -> Daca se rezolva cerinta 1 sau cerinta 2:
-    Folosinu-se doi pointeri, s-au deschis fisierele din care se citesc sau in care se scriu date. Se citesc valorile din fisierul de input si se construieste imaginea. Folosinf functia atoi, se face conversia argumentului de la linia de comanda argv[2] la un intreg pentru a se obtine factorul de compresie. Cu ajutorul functiei initQuadTree se initializeaza arborele ce contine imaginea. Apoi, programul comprima arborele de compresie si salveaza datele comprimate in fisierul de iesire.
+    Folosinu-se doi pointeri, s-au deschis fisierele din care se citesc sau in care se scriu date. Se citesc valorile din fisierul de input si se construieste imaginea. 
+Folosind functia atoi, se face conversia argumentului de la linia de comanda argv[2] la un intreg pentru a se obtine factorul de compresie. Cu ajutorul functiei initQuadTree 
+se initializeaza arborele ce contine imaginea. Apoi, programul comprima arborele de compresie si salveaza datele comprimate in fisierul de iesire.
     -> Daca se rezolva cerinta 3: 
-    Programul deschide fisierele de intrare si iesire, pentru decompresie. Daca fisierele au putut fi deschise, se apeleaza functia de decompresie si se salveaza imaginea in fisierul de output. La final, se elibereaza memoria ocupata de imagine si de datele sale.
+    Programul deschide fisierele de intrare si iesire, pentru decompresie. Daca fisierele au putut fi deschise, se apeleaza functia de decompresie si se salveaza imaginea in 
+fisierul de output. La final, se elibereaza memoria ocupata de imagine si de datele sale.
