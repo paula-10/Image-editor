@@ -1,0 +1,81 @@
+    In fisierul quadtree.h sunt definite structurile pentru imagine, pentru blocurile in care va fi necesar sa fie impartita imaginea, pentru arbore si 
+pentru fiecare nod al arborelui.
+    In fisierul quadtree.c, am delcarat urmatoarele functii:
+    
+1. image_t
+- aceasta functie primeste ca parametru fisierul din care se face citirea si citeste imaginea;
+- prima data initializeaza sirul magic_number, care contine tipul fisierului;
+- in variabila dummy se vor stoca endline-urile sau spatiile nule de la finalul randurilor;
+- se citesc din fisier dimensiunile imaginii si se aloca memorie pentru aceasta;
+- se citeste din fisier valoarea maxima(255) si se stocheaza in maxval;
+- se citesc din fisier pixelii imaginii si se stocheaza in vectorul data, al carui dimensiune se calculeaza tinand cont de dimensiunile imaginii si de faptul ca sunt 3 culori;
+
+2. writePPM
+- functia primeste ca parametru imaginea care urmeaza sa fie scrisa si pointerul catre fisierul in care se face scrierea;
+- scrierea in fisier se face conform modului de organizare a fisierelor din care se face citirea;
+- scrierea pixelilor de face cu functia fwrite fiindca sunt in format binar;
+
+3. calculateMean
+- functia primeste ca parametri imaginea si informatiile blocului(x si y sunt niste coordonate cu ajutorul carora este parcursa matricea imaginii iar size este dimensiunea blocului) pentru care se calculeaza scorul similaritatii;
+- este parcursa imaginea, tinad cont de impartirea in blocuri, iar pentru fiecare diviziune se calculeaza media culorilor;
+- dupa ce au fost calculate mediile culorilor, se calculeaza scorul similaritatii pentru fiecare bloc;
+
+4. initQuadTreeNode
+- functia primeste ca parametri pozitia de inceput a unui bloc, data de coordonatele x si y, si dimensiunea unui bloc;
+- functia aloca memorie pentru un nod frunza al arborelui;
+- initializeaza toti fii cu NULL si atribuie campurilor din definitia structurii valorile oferite ca parametri;
+
+5.  initQuadTree
+- functia primeste ca parametri imaginea si pragul impus pentru scorul similaritatii;
+- aceasta functie creeaza un arbore;
+
+6. freeQuadTreeNodes
+- functia primeste ca parametru arborele pentru care eliberam memoria ocupata de copii acestuia;
+
+7. freeQuadTree
+- functia elibereaza memoria ocupata de un arbore, inclusiv de nodul radacina;
+
+8. divideQuadTree
+- functia primeste ca parametri un pointer catre un arbore si un pointer catre nodul care trebuie impartit;
+- daca imaginea care urmeaza sa fie divizata are latura de 1, insemna ca nu se mai aplica operatia;
+- de asemenea, dacă valoarea obtinută pentru scor este mai mică sau egală decât pragul impus, atunci nu o să mai fie nevoie de divizare;
+- pentru fiecare cadran rezultat in urma diviziunii, se calculeaza coordonatele blocurilor, adica pozitiile de inceput si se creeaza un nod;
+
+9. getQuadTreeDepth
+- functia calculeaza adancimea unui arbore;
+- daca nodul radacina nu este NULL, functia calculeaza recursiv adancimea fiecarui subarbore din cei patru copii ai nodului radacina si o returneaza pe cea maxima;
+
+10. getQuadTreeLeavesNR
+- functia numara frunzele dintr-un arbore dat;
+- daca nodul radacina este NULL, functia returneaza 0;
+- daca nodul nu este NULL, functia verifica daca ar ecopii, iar in caz contrar, returneaza 1 fiindca nodul este o frunza;
+- daca nodul radacina are copii, functia numara recursiv frunzele si le aduna;
+
+11. getQuadTreeMaxUndivided
+- functia calculeaza dimensiunea maxima a unei sub-regiuni din arbore care nu a fost impartita in sub-regiuni mai mici;
+- daca nodul radacina este NULL functia returneaza 0, iar daca aceasta nu are copii, atunci este returnata dimensiunea radacinii;
+- daca nodul radacina are copii, functia calculeaza recursiv dimensiunea maxima a fiecarui subarbore din cei patru copii
+
+12. compressQuadTree
+- functia comprima arborele primit ca parametru si apoi scrie datele obtinute in fisierul specificat prin intermediul pointerului output;
+- este creata o coada, in care se adauga noduri prin parcurgerea arborelui pe nivel;
+- initial se adauga nodul radacina in arbore;
+- pentru fiecare nod intalnit in timpul parcurgerii, se verifica daca are copii sau nu;
+- daca nodul este funza, atunci se scrie in fisier tipul nodului urmat de valorile medii ale componentelor de culoare din blocul de imagine asociat;
+- culorile medii sunt calculate prin  parcurgerea tuturor pixelilor din fereastra;
+- daca nodul nu este frunza, functia scrie tipul 0 in fisier si adauga copiii in coada, pentru a fi prelucrati mai tarziu;
+- functia se opreste atunci cand nu mai sunt noduri in coada.
+
+13. decompressQuadTree
+- initial, functia citeste dimensiunea imaginii de la inceputul fisierului si aloca memorie pentru o imagine cu aceasta dimeniune;
+- apoi, inilializeaza un arbore cu aceasta imagine si adauga radacina in coada de procesare;
+- se citesc nodurile din fisierul de intrare: daca tipul este 0, inseamna ca nodul are 4 copii si se initilizeaza copiii cu dimensiunea sub-imaginii corespunzatoare si coordonatele calculate;
+- acesti copii sunt pe urma adaugati in coada;
+- daca tipul este 1, insemna ca nodul reprezinta o frunza asa ca se citesc mediile culorilor si se actualizeaza pixelii din imagine;
+- functia se opreste cand coada este goala, iar la final o elimina impreuna cu arborele;
+
+    In main, s-au facut verificari pentru introducerea numarului corect de argumente, printandu-se un mesaj in caz contrar. In functie de argumentele primite, se rezolva o anumita cerinta. Astfel:
+    -> Daca se rezolva cerinta 1 sau cerinta 2:
+    Folosinu-se doi pointeri, s-au deschis fisierele din care se citesc sau in care se scriu date. Se citesc valorile din fisierul de input si se construieste imaginea. Folosinf functia atoi, se face conversia argumentului de la linia de comanda argv[2] la un intreg pentru a se obtine factorul de compresie. Cu ajutorul functiei initQuadTree se initializeaza arborele ce contine imaginea. Apoi, programul comprima arborele de compresie si salveaza datele comprimate in fisierul de iesire.
+    -> Daca se rezolva cerinta 3: 
+    Programul deschide fisierele de intrare si iesire, pentru decompresie. Daca fisierele au putut fi deschise, se apeleaza functia de decompresie si se salveaza imaginea in fisierul de output. La final, se elibereaza memoria ocupata de imagine si de datele sale.
